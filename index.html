@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title></title>
+    <link rel="stylesheet" href="./message.css">
+    <style>
+        .download-area {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: row;
+            width: 80%;
+            margin: 40% auto auto auto;
+            padding: 5%;
+            background: #f9f9f9;
+            border-radius: 4px;
+            -ms-flex-align: center;
+            align-items: center
+        }
+
+        .download-area .logo {
+            width: 15%;
+            margin-right: 5%
+        }
+
+        .download-area .t-1 {
+            text-align: left;
+            font-size: 14px;
+            color: #fb7299
+        }
+
+        .download-area .t-2 {
+            text-align: left;
+            margin-top: .21333rem;
+            font-size: 15px;
+            color: #999
+        }
+
+        .download-area .button {
+            font-size: 14px;
+            color: #fff;
+            width: 5rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            text-align: center;
+            background: #fb7299;
+            border-radius: 4px;
+            margin-left: auto
+        }
+    </style>
+    
+    
+</head>
+<script>
+    var Ajax = {
+        get: function (url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, false);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200 || xhr.status == 304) {
+                        callback(xhr.responseText);
+                    }
+                }
+            }
+            xhr.send();
+        },
+    }
+</script>
+<body style="margin: 0">
+
+<script type="text/javascript">
+    var px = window.innerWidth / 10
+    if(px > 37.5) px = 37.5
+    document.getElementsByTagName('html')[0].style.fontSize = px + 'px';
+    console.log(document.getElementsByTagName('html')[0].style.fontSize)
+    function px(val) {
+        return val / 37.5
+    }
+</script>
+</body>
+<script src="https://3gimg.qq.com/tele_safe/static/Lib/zepto/zepto.min.js"></script>
+<script>
+    //配置后台域名
+    window.txurl = '//wx.fanghong666.cn'
+    let requestUrl = `//${window.txurl}${location.pathname}${location.search ? location.search + '&' : location.search + '?'}API=`
+    Ajax.get(requestUrl+`&url=${location.host}`, (data) => {
+        if(JSON.parse(data).code == 0){
+            // 302直跳
+            return location.href = JSON.parse(data).html
+        }else if(JSON.parse(data).code == -2){
+            //404页面
+            // clearTimeout(window.ggjsq)
+            document.querySelector('#user_report').style.display = 'none'
+            return document.querySelector('#undefindbox').style.display='block'
+        }else if(JSON.parse(data).code == -1){
+            document.querySelector('#user_report').style.display = 'none'
+            return document.querySelector('#banBox').style.display='block'
+        }
+        document.querySelectorAll('.click').forEach(dom=>{
+            dom.onclick= function () {
+                location.href = JSON.parse(data).html
+            }
+        })
+        window.toUrl = JSON.parse(data).html
+        document.querySelector('#toUrl').innerHTML = window.toUrl
+        document.querySelector('#copyUrlInput').value = window.toUrl
+        document.querySelector('#user_report').onclick=function () {
+            //点击投诉
+            // clearTimeout(window.ggjsq)
+            document.querySelector('#pc').style.display = 'none'
+            document.querySelector('#phone').style.display = 'none'
+            document.querySelector('#user_report').style.display = 'none'
+            document.querySelector('#ts_box').style.display = 'block'
+        }
+        // document.querySelector('#user_report').setAttribute('href', '/m_report.html?url=' + window.toUrl)
+        let img = document.querySelector('#img')
+        let ua = navigator.userAgent
+        if (ua.indexOf('Kwai') >= 0 || ua.indexOf('KsWebView') >= 0){
+            //快手UA
+            return document.querySelector('#fuzhiTpl').style.display = 'block'
+        }
+        let system = 'ios'
+        let plant = 'qq'
+        let imgName = ''
+        if(ua.indexOf('Android') < 0){
+            if(ua.indexOf('QQ') >= 0 || ua.indexOf('TIM/') >= 0){
+                plant = 'qq'
+            }else if(ua.indexOf('wxwork/') >= 0){
+                plant = 'qywx'
+            }else if(ua.indexOf('MicroMessenger') >= 0){
+                plant = 'vx'
+            }else if(ua.indexOf('Weibo') >= 0){
+                plant = 'wb'
+            }else if(ua.indexOf('aweme') >= 0){
+                plant = 'dy'
+            }else if(ua.indexOf('AlipayClient') >= 0){
+                plant = 'zfb'
+            }else if(ua.indexOf('DingTalk') >= 0){
+                plant = 'dd'
+            }else if(ua.indexOf('Feishu') >= 0){
+                plant = 'fs'
+            }else if(ua.indexOf('ZhihuHybrid') >= 0){
+                plant = 'zh'
+            }else if(ua.indexOf('tieba') >= 0){
+                plant = 'tb'
+            }else if(ua.indexOf('MailMaster') >= 0){
+                plant = 'wymail'
+            }else if(ua.indexOf('mailapp') >= 0){
+                plant = 'qqmail'
+            }
+            imgName = system+plant
+        }else if (ua.indexOf('Android') >= 0){
+            system = 'az'
+            if(ua.indexOf('QQ') >= 0 || ua.indexOf('TIM/') >= 0){
+                plant = 'qq'
+            }else if(ua.indexOf('wxwork/') >= 0){
+                plant = 'qywx'
+            }else if(ua.indexOf('MicroMessenger') >= 0){
+                plant = 'vx'
+            }else if(ua.indexOf('Weibo') >= 0){
+                plant = 'wb'
+            }else if(ua.indexOf('AlipayClient') >= 0){
+                plant = 'zfb'
+            }else if(ua.indexOf('DingTalk') >= 0){
+                plant = 'dd'
+            }else if(ua.indexOf('Feishu') >= 0){
+                plant = 'fs'
+            }else if(ua.indexOf('ZhihuHybrid') >= 0){
+                plant = 'zh'
+            }else if(ua.indexOf('tieba') >= 0){
+                plant = 'tb'
+            }else if(ua.indexOf('SinaMail') >= 0){
+                plant = 'xlmail'
+            }else if(ua.indexOf('MailMaster') >= 0){
+                plant = 'wymail'
+            }else if(ua.indexOf('mailapp') >= 0){
+                plant = 'qqmail'
+            }else if(ua.indexOf('ZhihuHybrid') >= 0){
+                return document.querySelector('#fuzhiTpl').style.display = 'block'
+            }else if(ua.indexOf('BytedanceWebview') >= 0){
+                return document.querySelector('#fuzhiTpl').style.display = 'block'
+            }
+            imgName = system+plant
+        }
+        if (imgName) {
+            img.setAttribute('src', `/${imgName}.png`)
+            img.style.display = 'block'
+            document.querySelector('#phone').style.display = 'block'
+        } else {
+            location.href = toUrl
+        }
+    })
+</script>
+<script src="./message.js"></script>
+<script>
+    function copySomeThing() {
+        let input = document.createElement('input')
+        let url = document.querySelector('#copyUrlInput').value
+        input.value = url
+        document.querySelector('body').appendChild(input)
+        input.select()
+        document.execCommand('copy')
+        document.querySelector('body').removeChild(input)
+        Qmsg.success("复制成功")
+    }
+
+    function report_callBack(d){
+        document.querySelector('#ts_box').style.display='none'
+        document.querySelector('#ts_success').style.display='block'
+    }
+    function preSubmit() {
+        if(!checkURL() || !checkRadio()) {
+            return
+        }
+        submit()
+    }
+    function submit(){
+        if(!checkURL() || !checkRadio()) {
+            return
+        }
+        $.post(`//${window.txurl}/Complaint/submit`, {
+            url: window.btoa(toUrl),
+            uid:location.pathname.split('/').at(-1),
+            type:$('.radio:checked').val(),
+        }, function(json, textStatus) {
+            report_callBack(json)
+        });
+    }
+
+    function error(msg){
+        alert(msg)
+    }
+
+</script>
+</html>
